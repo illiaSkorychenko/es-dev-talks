@@ -1,0 +1,21 @@
+{
+  "name": "es-dev-talks",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "start-example": "ts-node src/index.ts",
+    "docker:start": "docker-compose -p es-dev-talks up -d"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "@elastic/elasticsearch": "^8.13.1",
+    "@pinecone-database/pinecone": "^2.2.1",
+    "dotenv": "^16.4.5",
+    "ollama": "^0.5.1",
+    "openai": "^4.47.1"
+  }
+}

@@ -1,27 +1,19 @@
 import { SearchHit } from '@elastic/elasticsearch/lib/api/types';
 import { Clients } from '../types/Clients';
 import { randomUUID } from 'node:crypto';
+import { deleteEsIndexIfExists } from '../common/delete-es-index-if-exists';
 
 const INDEX_NAME = 'embeddings';
 
 export async function run(clients: Clients) {
-  // await create(clients);
-  // await search(clients);
+  await create(clients);
+  await search(clients);
 }
 
 async function create(clients: Clients) {
-  const indexExists = await clients.esClient.indices.exists({
-    index: INDEX_NAME,
-  });
-
-  if (indexExists) {
-    await clients.esClient.indices.delete({
-      index: INDEX_NAME,
-    });
-  }
-
+  await deleteEsIndexIfExists(clients.esClient, INDEX_NAME)
   await clients.esClient.indices.create({
-    index: INDEX_NAME,
+  index: INDEX_NAME,
     mappings: {
       properties: {
         text: {
@@ -46,7 +38,7 @@ async function create(clients: Clients) {
 
     await clients.esClient.create({
       id: randomUUID(),
-      index: 'embeddings',
+      index: INDEX_NAME,
       document: {
         text: input,
         vector: resp.embedding,
